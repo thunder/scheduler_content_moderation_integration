@@ -5,13 +5,14 @@
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "require": {
+    "cweagans/composer-patches": "~1.0",
     "drupal/scheduler": "~1.0"
   },
   "extra": {
     "patches": {
       "drupal/scheduler": {
-        "Scheduler integration with core Content moderation": "https://www.drupal.org/files/issues/2019-01-09/2798689-160-alternative-approach.patch"
+        "Scheduler integration with core Content moderation": "https://www.drupal.org/files/issues/2019-01-23/2798689-170-alternative-approach.patch"
       }
     }
-  }
+  }
 }
