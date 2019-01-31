@@ -25,7 +25,7 @@ env:
 
 before_install:
   - composer global require thunder/travis
-  - test-drupal-module prepare_build
+  - test-drupal-module build
   - 'cd /tmp/test/scheduler_content_moderation_integration/install/web/modules/contrib/scheduler; curl "https://www.drupal.org/files/issues/2019-01-23/2798689-170-alternative-approach.patch" | patch -p1'
 script:
   - test-drupal-module
