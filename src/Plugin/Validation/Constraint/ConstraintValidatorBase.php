@@ -5,6 +5,7 @@ namespace Drupal\scheduler_content_moderation_integration\Plugin\Validation\Cons
 use Drupal\content_moderation\ModerationInformationInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Entity\ContentEntityInterface;
+use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -23,13 +24,26 @@ abstract class ConstraintValidatorBase extends ConstraintValidator implements Co
   protected $moderationInformation;
 
   /**
+   * The current user.
+   *
+   * @var \Drupal\Core\Session\AccountProxyInterface
+   */
+  protected $account;
+
+  /**
    * SchedulerModerationConstraintValidator constructor.
    *
    * @param \Drupal\content_moderation\ModerationInformationInterface $moderationInformation
    *   The content moderation information service.
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   The current user.
    */
-  public function __construct(ModerationInformationInterface $moderationInformation) {
+  public function __construct(
+    ModerationInformationInterface $moderationInformation,
+    AccountInterface $account
+  ) {
     $this->moderationInformation = $moderationInformation;
+    $this->account = $account;
   }
 
   /**
@@ -37,7 +51,8 @@ abstract class ConstraintValidatorBase extends ConstraintValidator implements Co
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('content_moderation.moderation_information')
+      $container->get('content_moderation.moderation_information'),
+      $container->get('current_user')
     );
   }
 

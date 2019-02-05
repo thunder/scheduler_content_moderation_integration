@@ -41,7 +41,8 @@ function scheduler_content_moderation_integration_entity_base_field_info(EntityT
       ->setDisplayConfigurable('view', FALSE)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
-      ->addConstraint('SchedulerPublishState');
+      ->addConstraint('SchedulerPublishState')
+      ->addConstraint('SchedulerModerationTransitionAccess');
 
     $fields['unpublish_state'] = BaseFieldDefinition::create('list_string')
       ->setSetting('allowed_values_function', '_scheduler_content_moderation_integration_states_values')
@@ -59,7 +60,8 @@ function scheduler_content_moderation_integration_entity_base_field_info(EntityT
       ->setDisplayConfigurable('view', FALSE)
       ->setTranslatable(TRUE)
       ->setRevisionable(TRUE)
-      ->addConstraint('SchedulerUnPublishState');
+      ->addConstraint('SchedulerUnPublishState')
+      ->addConstraint('SchedulerModerationTransitionAccess');
   }
 
   return $fields;
