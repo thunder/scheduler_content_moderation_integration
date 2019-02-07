@@ -28,7 +28,7 @@ env:
     - DRUPAL_TRAVIS_TEST_JAVASCRIPT=false
 
 before_install:
-  - composer global require thunder/travis:dev-feature/provide-test-directory
+  - composer global require thunder/travis
   - test-drupal-module prepare_build
 
   # required modules for scheduler tests.
