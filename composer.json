@@ -6,8 +6,8 @@
   "minimum-stability": "dev",
   "repositories": [
     {
-      "type": "vcs",
-      "url": "https://github.com/thunder/scheduler_content_moderation_integration"
+      "type": "composer",
+      "url": "https://packages.drupal.org/8"
     }
   ],
   "require": {
