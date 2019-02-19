@@ -5,12 +5,12 @@
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "require": {
-    "drupal/scheduler": "1.0"
+    "drupal/scheduler": "dev-1.x"
   },
   "extra": {
     "patches": {
       "drupal/scheduler": {
-        "Scheduler integration with core Content moderation": "https://www.drupal.org/files/issues/2019-01-23/2798689-170-alternative-approach.patch"
+        "Scheduler integration with core Content moderation": "https://www.drupal.org/files/issues/2019-02-19/2798689-181.content_moderation_sub_module.patch"
       }
     }
   }
