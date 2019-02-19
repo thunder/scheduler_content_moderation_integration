@@ -4,16 +4,6 @@
   "description": "Scheduler content moderation integration",
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://git.drupal.org/project/scheduler.git"
-    },
-    {
-      "type": "composer",
-      "url": "https://packages.drupal.org/8"
-    }
-  ],
   "require": {
     "drupal/scheduler": "1.x-dev"
   },
