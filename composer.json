@@ -4,6 +4,12 @@
   "description": "Scheduler content moderation integration",
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/thunder/scheduler_content_moderation_integration"
+    }
+  ],
   "require": {
     "drupal/scheduler": "1.x-dev"
   },
