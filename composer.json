@@ -6,6 +6,10 @@
   "minimum-stability": "dev",
   "repositories": [
     {
+      "type": "vcs",
+      "url": "https://git.drupal.org/project/scheduler.git"
+    },
+    {
       "type": "composer",
       "url": "https://packages.drupal.org/8"
     }
