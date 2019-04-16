@@ -115,7 +115,7 @@ function _scheduler_content_moderation_integration_states_values(FieldStorageDef
   $moderation_information = \Drupal::service('content_moderation.moderation_information');
 
   // Only add options for moderated entities.
-  if (!$moderation_information->isModeratedEntity($entity)) {
+  if (!$entity || !$moderation_information->isModeratedEntity($entity)) {
     return $options;
   }
 
