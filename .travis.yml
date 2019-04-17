@@ -37,4 +37,4 @@ before_install:
   - composer require drupal/typed_data --no-update --working-dir=/tmp/test/scheduler_content_moderation_integration/install
 
 script:
-  - test-drupal-module
+  - test-drupal-project
