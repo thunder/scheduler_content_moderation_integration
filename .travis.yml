@@ -29,7 +29,7 @@ env:
 
 before_install:
   - composer global require thunder/travis
-  - test-drupal-module prepare_build
+  - test-drupal-project prepare_build
 
   # required modules for scheduler tests.
   - composer require drupal/rules --no-update --working-dir=/tmp/test/scheduler_content_moderation_integration/install
