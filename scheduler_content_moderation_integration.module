@@ -108,6 +108,23 @@ function scheduler_content_moderation_integration_form_node_form_alter(&$form, F
  */
 function _scheduler_content_moderation_integration_states_values(FieldStorageDefinitionInterface $definition, FieldableEntityInterface $entity = NULL, &$cacheable = FALSE) {
   $options = [];
+
+  // Fetch all possible states if no entity is given.
+  if (!$entity) {
+    $workflow_storage = \Drupal::entityTypeManager()->getStorage('workflow');
+
+    foreach ($workflow_storage->loadByProperties(['type' => 'content_moderation']) as $workflow) {
+      /** @var \Drupal\content_moderation\Plugin\WorkflowType\ContentModerationInterface $workflow_type */
+      $workflow_type = $workflow->getTypePlugin();
+
+      foreach ($workflow_type->getStates() as $state_id => $state) {
+        $options[$workflow->id() . '_' . $state_id] = $state->label();
+      }
+    }
+
+    return $options;
+  }
+
   // @todo should call $widget->getEmptyLabel().
   $options['_none'] = '';
 
