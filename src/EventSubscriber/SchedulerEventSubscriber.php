@@ -1,8 +1,6 @@
 <?php
 
-namespace Drupal\content_moderation\EventSubscriber;
-
-namespace Drupal\scheduler_api_test;
+namespace Drupal\scheduler_content_moderation_integration\EventSubscriber;
 
 use Drupal\scheduler\SchedulerEvent;
 use Drupal\scheduler\SchedulerEvents;

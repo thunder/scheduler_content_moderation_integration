@@ -208,7 +208,6 @@ function scheduler_content_moderation_integration_scheduler_publish_action($node
   return 0;
 }
 
-
 /**
  * Implements hook_scheduler_unpublish_action().
  */
@@ -216,7 +215,7 @@ function scheduler_content_moderation_integration_scheduler_unpublish_action($no
   $moderation_info = \Drupal::service('content_moderation.moderation_information');
   // If scheduler_content_moderation_integration is enabled, set to
   // unpublished state.
-  if ($this->schedulerModerationEnabled && $moderation_info->isModeratedEntity($node)) {
+  if ($moderation_info->isModeratedEntity($node)) {
     $state = $node->unpublish_state->value;
     $node->unpublish_state->value = NULL;
 
