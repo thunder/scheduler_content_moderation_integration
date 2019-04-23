@@ -10,7 +10,8 @@
   "extra": {
     "patches": {
       "drupal/scheduler": {
-        "Scheduler integration with core Content moderation": "https://www.drupal.org/files/issues/2019-01-23/2798689-170-alternative-approach.patch",
+        "Scheduler integration with core Content moderation": "https://www.drupal.org/files/issues/2019-04-23/2798689-195.content_moderation_hooks.patch",
+        "Load latest revision of node when publishing and unpublishing": "https://www.drupal.org/files/issues/2019-04-18/3049070-1.load_latest_revision.patch",
         "Replace assertRaw(t()) with assertText()": "https://www.drupal.org/files/issues/2019-02-07/3031199-3.change_assertRaw_to_assertText.patch"
       }
     }
