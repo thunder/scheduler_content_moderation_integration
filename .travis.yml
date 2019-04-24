@@ -23,7 +23,6 @@ env:
     - DRUPAL_TRAVIS_TEST_JAVASCRIPT=false
 
 before_install:
-  - mkdir $HOME/.composer/cache
   - composer global require thunder/travis
   - export PATH="$PATH:$HOME/.composer/vendor/bin"
   - test-drupal-project prepare_build
