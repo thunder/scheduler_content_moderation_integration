@@ -7,12 +7,12 @@ php:
 services:
   - mysql
 
-cache:
-  apt: true
-  directories:
-  - "$HOME/.composer/cache"
-  - "$HOME/.drush/cache"
-  - "$HOME/.npm"
+#cache:
+#  apt: true
+#  directories:
+#  - "$HOME/.composer/cache"
+#  - "$HOME/.drush/cache"
+#  - "$HOME/.npm"
 
 branches:
   only:
