@@ -233,7 +233,7 @@ function scheduler_content_moderation_integration_scheduler_unpublish_action($no
   /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_information */
   $moderation_information = \Drupal::service('content_moderation.moderation_information');
 
-  if ($moderation_information->isModeratedEntity($node)) {
+  if (!$moderation_information->isModeratedEntity($node)) {
     return 0;
   }
 
