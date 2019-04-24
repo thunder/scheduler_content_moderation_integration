@@ -7,12 +7,7 @@ php:
 services:
   - mysql
 
-cache:
-  apt: true
-  directories:
-  - "$HOME/.composer/cache"
-  - "$HOME/.drush/cache"
-  - "$HOME/.npm"
+cache: false
 
 branches:
   only:
@@ -29,6 +24,7 @@ env:
 
 before_install:
   - composer global require thunder/travis
+  - export PATH="$PATH:$HOME/.composer/vendor/bin"
   - test-drupal-project prepare_build
 
   # required modules for scheduler tests.
