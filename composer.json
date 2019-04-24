@@ -5,7 +5,7 @@
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
   "require": {
-    "drupal/scheduler": "1.x-dev"
+    "drupal/scheduler": "dev-8.x-1.x"
   },
   "extra": {
     "patches": {
