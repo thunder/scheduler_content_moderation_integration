@@ -159,78 +159,97 @@ function _scheduler_content_moderation_integration_states_values(FieldStorageDef
 
 /**
  * Implements hook_scheduler_hide_publish_on_field().
+ *
+ * This hook is called from scheduler_form_node_form_alter() and returns TRUE if
+ * the scheduler publish_on field should be hidden.
  */
 function scheduler_content_moderation_integration_scheduler_hide_publish_on_field($form, $form_state, $node) {
-  /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_info */
-  $moderation_info = \Drupal::service('content_moderation.moderation_information');
-  if ($moderation_info->isModeratedEntity($node)) {
-    return empty($form['publish_state']['widget'][0]['#options']);
+  /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_information */
+  $moderation_information = \Drupal::service('content_moderation.moderation_information');
+
+  $return = FALSE;
+  if ($moderation_information->isModeratedEntity($node)) {
+    // If no moderation transitions are available for publish_state then hide
+    // the publish_on scheduler field.
+    $return = count($form['publish_state']['widget'][0]['#options']) <= 1;
   }
-  return FALSE;
+  return $return;
 }
 
 /**
  * Implements hook_scheduler_hide_unpublish_on_field().
+ *
+ * This hook is called from scheduler_form_node_form_alter() and returns TRUE if
+ * the scheduler unpublish_on field should be hidden.
  */
 function scheduler_content_moderation_integration_scheduler_hide_unpublish_on_field($form, $form_state, $node) {
-  /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_info */
-  $moderation_info = \Drupal::service('content_moderation.moderation_information');
-  if ($moderation_info->isModeratedEntity($node)) {
-    return empty($form['unpublish_state']['widget'][0]['#options']);
+  /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_information */
+  $moderation_information = \Drupal::service('content_moderation.moderation_information');
+
+  $return = FALSE;
+  if ($moderation_information->isModeratedEntity($node)) {
+    // If no moderation transitions are available for unpublish_state then hide
+    // the unpublish_on scheduler field.
+    $return = count($form['unpublish_state']['widget'][0]['#options']) <= 1;
   }
-  return FALSE;
+  return $return;
 }
 
 /**
  * Implements hook_scheduler_publish_action().
+ *
+ * This hook is called from schedulerManger::publish() and returns TRUE if the
+ * node has been processed here and hence should not be published via Scheduler.
  */
 function scheduler_content_moderation_integration_scheduler_publish_action($node) {
-  $moderation_info = \Drupal::service('content_moderation.moderation_information');
-  // If scheduler_content_moderation_integration is enabled, set to
-  // published state.
-  if ($moderation_info->isModeratedEntity($node)) {
-    $state = $node->publish_state->value;
-    $node->publish_state->value = NULL;
+  /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_information */
+  $moderation_information = \Drupal::service('content_moderation.moderation_information');
 
-    /** @var \Drupal\content_moderation\Plugin\WorkflowType\ContentModerationInterface $type_plugin */
-    $type_plugin = $moderation_info->getWorkflowForEntity($node)->getTypePlugin();
-    try {
-      // If transition is not valid, throw exception.
-      $type_plugin->getTransitionFromStateToState($node->moderation_state->value, $state);
-      $node->set('moderation_state', $state);
-      return 1;
-    }
-    catch (\InvalidArgumentException $exception) {
-      $node->save();
-      return -1;
-    }
+  if (!$moderation_information->isModeratedEntity($node)) {
+    return 0;
   }
-  return 0;
+
+  $state = $node->publish_state->value;
+  $node->publish_state->value = NULL;
+
+  /** @var \Drupal\content_moderation\Plugin\WorkflowType\ContentModerationInterface $type_plugin */
+  $type_plugin = $moderation_information->getWorkflowForEntity($node)->getTypePlugin();
+  try {
+    // If transition is not valid, throw exception.
+    $type_plugin->getTransitionFromStateToState($node->moderation_state->value, $state);
+    $node->set('moderation_state', $state);
+    return 1;
+  }
+  catch (\InvalidArgumentException $exception) {
+    $node->save();
+    return -1;
+  }
 }
 
 /**
  * Implements hook_scheduler_unpublish_action().
  */
 function scheduler_content_moderation_integration_scheduler_unpublish_action($node) {
-  $moderation_info = \Drupal::service('content_moderation.moderation_information');
-  // If scheduler_content_moderation_integration is enabled, set to
-  // unpublished state.
-  if ($moderation_info->isModeratedEntity($node)) {
-    $state = $node->unpublish_state->value;
-    $node->unpublish_state->value = NULL;
+  /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_information */
+  $moderation_information = \Drupal::service('content_moderation.moderation_information');
 
-    /** @var \Drupal\content_moderation\Plugin\WorkflowType\ContentModerationInterface $type_plugin */
-    $type_plugin = $moderation_info->getWorkflowForEntity($node)->getTypePlugin();
-    try {
-      // If transition is not valid, throw exception.
-      $type_plugin->getTransitionFromStateToState($node->moderation_state->value, $state);
-      $node->set('moderation_state', $state);
-      return 1;
-    }
-    catch (\InvalidArgumentException $exception) {
-      $node->save();
-      return -1;
-    }
+  if ($moderation_information->isModeratedEntity($node)) {
+    return 0;
   }
-  return 0;
+
+  $state = $node->unpublish_state->value;
+  $node->unpublish_state->value = NULL;
+
+  /** @var \Drupal\content_moderation\Plugin\WorkflowType\ContentModerationInterface $type_plugin */
+  $type_plugin = $moderation_information->getWorkflowForEntity($node)->getTypePlugin();
+  try {
+    // If transition is not valid, throw exception.
+    $type_plugin->getTransitionFromStateToState($node->moderation_state->value, $state);
+    $node->set('moderation_state', $state);
+    return 1;
+  }
+  catch (\InvalidArgumentException $exception) {
+    $node->save();
+    return -1;
+  }
 }
