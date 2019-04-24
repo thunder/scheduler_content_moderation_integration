@@ -7,7 +7,8 @@ build:
         halt-on-fail: true
       host_command:
         commands:
-          - 'cd modules/contrib/scheduler; sudo -u www-data curl "https://www.drupal.org/files/issues/2019-01-23/2798689-170-alternative-approach.patch" | sudo -u www-data patch -p1'
+          - 'cd modules/contrib/scheduler; sudo -u www-data curl "https://www.drupal.org/files/issues/2019-04-23/2798689-202.content_moderation_hooks.patch" | sudo -u www-data patch -p1'
+          - 'cd modules/contrib/scheduler; sudo -u www-data curl "https://www.drupal.org/files/issues/2019-04-18/3049070-1.load_latest_revision.patch" | sudo -u www-data patch -p1'
       csslint:
         halt-on-fail: false
       eslint:
