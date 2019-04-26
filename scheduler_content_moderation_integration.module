@@ -171,7 +171,7 @@ function scheduler_content_moderation_integration_scheduler_hide_publish_on_fiel
   if ($moderation_information->isModeratedEntity($node)) {
     // If no moderation transitions are available for publish_state then hide
     // the publish_on scheduler field.
-    $return = count($form['publish_state']['widget'][0]['#options']) <= 1;
+    $return = (count($form['publish_state']['widget'][0]['#options']) <= 1);
   }
   return $return;
 }
@@ -190,7 +190,7 @@ function scheduler_content_moderation_integration_scheduler_hide_unpublish_on_fi
   if ($moderation_information->isModeratedEntity($node)) {
     // If no moderation transitions are available for unpublish_state then hide
     // the unpublish_on scheduler field.
-    $return = count($form['unpublish_state']['widget'][0]['#options']) <= 1;
+    $return = (count($form['unpublish_state']['widget'][0]['#options']) <= 1);
   }
   return $return;
 }
@@ -198,8 +198,11 @@ function scheduler_content_moderation_integration_scheduler_hide_unpublish_on_fi
 /**
  * Implements hook_scheduler_publish_action().
  *
- * This hook is called from schedulerManger::publish() and returns TRUE if the
- * node has been processed here and hence should not be published via Scheduler.
+ * This hook is called from schedulerManger::publish(). The return values are:
+ * 1  if the node has been processed here and hence should not be published via
+ *    Scheduler.
+ * -1 if an exception is thrown, to abandon processing this node in Scheduler.
+ * 0  if not moderated, to let Scheduler process the node as normal.
  */
 function scheduler_content_moderation_integration_scheduler_publish_action($node) {
   /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_information */
@@ -228,6 +231,12 @@ function scheduler_content_moderation_integration_scheduler_publish_action($node
 
 /**
  * Implements hook_scheduler_unpublish_action().
+ *
+ * This hook is called from schedulerManger::unpublish(). The return values are:
+ * 1  if the node has been processed here and hence should not be unpublished
+ *    via Scheduler.
+ * -1 if an exception is thrown, to abandon processing this node in Scheduler.
+ * 0  if not moderated, to let Scheduler process the node as normal.
  */
 function scheduler_content_moderation_integration_scheduler_unpublish_action($node) {
   /** @var \Drupal\content_moderation\ModerationInformationInterface $moderation_information */
