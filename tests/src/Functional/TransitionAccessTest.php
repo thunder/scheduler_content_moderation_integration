@@ -73,7 +73,7 @@ class TransitionAccessTest extends BrowserTestBase {
       'title[0][value]' => $this->randomString(),
       'moderation_state[0][state]' => 'published',
     ];
-    $this->drupalPostForm('node/add/page', $edit, t('Save'));
+    $this->drupalPostForm('node/add/page', $edit, 'Save');
 
     $node = $this->drupalGetNodeByTitle($edit['title[0][value]']);
     $publish_time = strtotime('+2 days');
@@ -86,7 +86,7 @@ class TransitionAccessTest extends BrowserTestBase {
       'publish_on[0][value][time]' => date('H:i:s', $publish_time),
       'publish_state[0]' => 'published',
     ];
-    $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, t('Save'));
+    $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, 'Save');
     // It should fail because the user does not have access to the
     // "archived_published" transition.
     $this->assertSession()->pageTextContains('You do not have access to transition from Archived to Published');
@@ -98,7 +98,7 @@ class TransitionAccessTest extends BrowserTestBase {
       'publish_on[0][value][time]' => date('H:i:s', $publish_time),
       'publish_state[0]' => 'published',
     ];
-    $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, t('Save'));
+    $this->drupalPostForm('node/' . $node->id() . '/edit', $edit, 'Save');
     $date_formatter = \Drupal::service('date.formatter');
     $this->assertSession()->pageTextContains('This post is unpublished and will be published ' . $date_formatter->format($publish_time, 'long'));
   }
