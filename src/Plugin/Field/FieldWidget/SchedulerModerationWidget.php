@@ -26,8 +26,18 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class SchedulerModerationWidget extends OptionsSelectWidget implements ContainerFactoryPluginInterface {
 
+  /**
+   * The moderation information service.
+   *
+   * @var \Drupal\content_moderation\ModerationInformationInterface
+   */
   protected $moderationInformation;
 
+  /**
+   * The moderated entity.
+   *
+   * @var \Drupal\Core\Entity\EntityInterface
+   */
   protected $entity;
 
   /**
