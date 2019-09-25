@@ -68,10 +68,19 @@ class SchedulerModerationWidget extends OptionsSelectWidget implements Container
       }
     }
 
-    // If the user is not allowed to set the publishing or un-publishing dates
-    // return an empty array.
-    if (!\Drupal::currentUser()->hasPermission('schedule publishing of nodes') || !$this->getOptions($items->getEntity())) {
-      $element['#access'] = FALSE;
+    // When the user is not allowed schedule nodes pass-thru selected values.
+    if (!\Drupal::currentUser()->hasPermission('schedule publishing of nodes')) {
+      // Prevent losing values when the user does not have access to content
+      // moderation states selected by another user. In this case getOptions()
+      // does not return states and passing selected states will fail
+      // validation.
+      $selected_options = [];
+      foreach ($items as $item) {
+        $selected_options[] = $item->{$this->column};
+      }
+      $element['#type'] = 'hidden';
+      $element['#default_value'] = $selected_options;
+      $element['#element_validate'] = [];
     }
 
     return $element;
