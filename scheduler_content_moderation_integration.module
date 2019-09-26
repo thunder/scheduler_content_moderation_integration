@@ -171,7 +171,8 @@ function scheduler_content_moderation_integration_scheduler_hide_publish_on_fiel
   if ($moderation_information->isModeratedEntity($node)) {
     // If no moderation transitions are available for publish_state then hide
     // the publish_on scheduler field.
-    $return = (count($form['publish_state']['widget'][0]['#options']) <= 1);
+    $options_without_none = array_diff_key($form['publish_state']['widget'][0]['#options'], ['_none' => '']);
+    $return = (count($options_without_none) == 0);
   }
   return $return;
 }
@@ -190,7 +191,8 @@ function scheduler_content_moderation_integration_scheduler_hide_unpublish_on_fi
   if ($moderation_information->isModeratedEntity($node)) {
     // If no moderation transitions are available for unpublish_state then hide
     // the unpublish_on scheduler field.
-    $return = (count($form['unpublish_state']['widget'][0]['#options']) <= 1);
+    $options_without_none = array_diff_key($form['unpublish_state']['widget'][0]['#options'], ['_none' => '']);
+    $return = (count($options_without_none) == 0);
   }
   return $return;
 }
