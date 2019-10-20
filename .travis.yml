@@ -16,7 +16,10 @@ cache:
 
 branches:
   only:
+    # Standard branch e.g. 8.x-1.x
     - /^8\.([0-9]+|x)\-[0-9]+\.([0-9]+|x)$/
+    # Any issue branch starting with 7 digits followed by -
+    - /^[0-9]{7}\-.*/
 
 env:
   matrix:
