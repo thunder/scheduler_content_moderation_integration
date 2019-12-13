@@ -17,11 +17,14 @@ class TransitionAccessTest extends BrowserTestBase {
   use ContentModerationTestTrait;
 
   /**
-   * Modules to install.
-   *
-   * @var array
+   * {@inheritdoc}
    */
-  public static $modules = ['content_moderation', 'scheduler_content_moderation_integration'];
+  protected $defaultTheme = 'stark';
+
+  /**
+   * {@inheritdoc}
+   */
+  protected static $modules = ['content_moderation', 'scheduler_content_moderation_integration'];
 
   /**
    * User.
