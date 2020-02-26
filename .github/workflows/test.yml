@@ -41,6 +41,9 @@ jobs:
           echo "::add-path::$GITHUB_WORKSPACE/vendor/bin"
           echo "::add-path::$GITHUB_WORKSPACE/bin"
 
+      - name: Get build environment
+        run: composer global require thunder/drupal-testing
+
       - name: Run tests
         run: test-drupal-project
         env:
