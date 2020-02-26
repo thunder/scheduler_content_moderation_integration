@@ -33,7 +33,7 @@ function scheduler_content_moderation_integration_entity_access(EntityInterface 
   $moderation_info = Drupal::service('content_moderation.moderation_information');
 
   if ($operation === 'update' && $moderation_info->isModeratedEntity($entity) && $entity->moderation_state
-    && ($entity->publish_state || $entity->unpublish_state)) {
+    && ($entity->publish_on->value || $entity->unpublish_on->value)) {
 
     /** @var \Drupal\workflows\WorkflowInterface $workflow */
     $workflow = $moderation_info->getWorkflowForEntity($entity);
