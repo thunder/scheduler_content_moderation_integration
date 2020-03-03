@@ -4,7 +4,6 @@
   "description": "Scheduler Content Moderation Integration",
   "license": "GPL-2.0-or-later",
   "minimum-stability": "dev",
-
   "require": {
     "drupal/scheduler": "^1.1"
   }
