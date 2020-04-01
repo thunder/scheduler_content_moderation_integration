@@ -1,0 +1,53 @@
+name: Run module tests
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+  schedule:
+    - cron:  '0 4 * * *'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        DRUPAL_TESTING_DRUPAL_VERSION: ['~8.8.0', '~9.0.0']
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: shivammathur/setup-php@master
+        with:
+          coverage: none
+          php-version: '7.3'
+
+      # Create-project with absolute path is broken in 1.10-RC;
+      # setup-php action does not support passing composer version.
+      - name: Downgrade composer
+        run: sudo rm /usr/local/bin/composer; composer self-update 1.9.3
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-cache-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-cache-
+
+      - name: Setup environment variables
+        run: |
+          echo "::add-path::$HOME/.composer/vendor/bin"
+          echo "::add-path::$GITHUB_WORKSPACE/vendor/bin"
+          echo "::add-path::$GITHUB_WORKSPACE/bin"
+
+      - name: Get build environment
+        run: composer global require thunder/drupal-testing
+
+      - name: Run tests
+        run: test-drupal-project
+        env:
+          DRUPAL_TESTING_TEST_CODING_STYLES: false
+          DRUPAL_TESTING_DRUPAL_VERSION: ${{ matrix.DRUPAL_TESTING_DRUPAL_VERSION }}
