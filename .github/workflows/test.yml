@@ -8,6 +8,12 @@ on:
   schedule:
     - cron:  '0 4 * * *'
 
+env:
+  DRUPAL_TESTING_TEST_CODING_STYLES: false
+  DRUPAL_TESTING_DATABASE_USER: root
+  DRUPAL_TESTING_DATABASE_PASSWORD: root
+  DRUPAL_TESTING_DATABASE_ENGINE: mysql
+
 jobs:
   build:
 
@@ -24,6 +30,10 @@ jobs:
         with:
           coverage: none
           php-version: '7.3'
+
+      - name: Start MySql service
+        run: |
+          sudo /etc/init.d/mysql start
 
       - name: Cache composer dependencies
         uses: actions/cache@v1
@@ -44,5 +54,4 @@ jobs:
       - name: Run tests
         run: test-drupal-project
         env:
-          DRUPAL_TESTING_TEST_CODING_STYLES: false
           DRUPAL_TESTING_DRUPAL_VERSION: ${{ matrix.DRUPAL_TESTING_DRUPAL_VERSION }}
