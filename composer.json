@@ -6,12 +6,5 @@
   "minimum-stability": "dev",
   "require": {
     "drupal/scheduler": "1.x-dev"
-  },
-    "extra": {
-        "patches": {
-            "drupal/scheduler": {
-                "core for testing modules": "https://www.drupal.org/files/issues/2020-04-02/3079913-21.patch"
-            }
-        }
-    }
+  }
 }
