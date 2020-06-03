@@ -8,22 +8,31 @@ on:
   schedule:
     - cron:  '0 4 * * *'
 
+env:
+  DRUPAL_TESTING_TEST_CODING_STYLES: false
+  DRUPAL_TESTING_DATABASE_USER: root
+  DRUPAL_TESTING_DATABASE_PASSWORD: root
+  DRUPAL_TESTING_DATABASE_ENGINE: mysql
+
 jobs:
   build:
 
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        DRUPAL_TESTING_DRUPAL_VERSION: ['~8.7.0', '~8.8.0', '~8.9.0', '~9.0.0']
+
     steps:
       - uses: actions/checkout@v1
 
-      - uses: shivammathur/setup-php@master
+      - uses: shivammathur/setup-php@v2
         with:
           coverage: none
           php-version: '7.3'
 
-      # Create-project with absolute path is broken in 1.10-RC;
-      # setup-php action does not support passing composer version.
-      - name: Downgrade composer
-        run: sudo rm /usr/local/bin/composer; composer self-update 1.9.3
+      - name: Start MySql service
+        run: sudo /etc/init.d/mysql start
 
       - name: Cache composer dependencies
         uses: actions/cache@v1
@@ -32,16 +41,25 @@ jobs:
           key: ${{ runner.os }}-composer-cache-${{ hashFiles('**/composer.json') }}
           restore-keys: ${{ runner.os }}-composer-cache-
 
-      - name: Setup environment variables
-        run: |
-          echo "::add-path::$HOME/.composer/vendor/bin"
-          echo "::add-path::$GITHUB_WORKSPACE/vendor/bin"
-          echo "::add-path::$GITHUB_WORKSPACE/bin"
-
       - name: Get build environment
         run: composer global require thunder/drupal-testing
 
-      - name: Run tests
-        run: test-drupal-project
+      - name: Prepare the build
+        run: test-drupal-project prepare_build
         env:
-          DRUPAL_TESTING_TEST_CODING_STYLES: false
+          DRUPAL_TESTING_DRUPAL_VERSION: ${{ matrix.DRUPAL_TESTING_DRUPAL_VERSION }}
+
+      - name: Build the docroot
+        run: test-drupal-project build
+
+      - name: Test for deprecations
+        run: test-drupal-project deprecation
+        if: ${{ matrix.DRUPAL_TESTING_DRUPAL_VERSION != '~9.0.0' }}
+
+      - name: Install drupal
+        run: test-drupal-project install
+        env:
+          DRUPAL_TESTING_TEST_DEPRECATION: false
+
+      - name: Start webserver and run the tests
+        run: test-drupal-project
