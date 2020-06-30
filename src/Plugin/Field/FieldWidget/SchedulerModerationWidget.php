@@ -4,7 +4,6 @@ namespace Drupal\scheduler_content_moderation_integration\Plugin\Field\FieldWidg
 
 use Drupal\content_moderation\ModerationInformationInterface;
 use Drupal\Core\Entity\ContentEntityForm;
-use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldWidget\OptionsSelectWidget;
@@ -106,7 +105,7 @@ class SchedulerModerationWidget extends OptionsSelectWidget implements Container
    * {@inheritdoc}
    */
   public static function isApplicable(FieldDefinitionInterface $field_definition) {
-    if ($field_definition instanceof BaseFieldDefinition && $field_definition->getProvider() === 'scheduler_content_moderation_integration') {
+    if ($field_definition->getFieldStorageDefinition()->getProvider() === 'scheduler_content_moderation_integration') {
       return TRUE;
     }
   }

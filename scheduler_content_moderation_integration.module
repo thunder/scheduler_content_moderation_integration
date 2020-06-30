@@ -207,7 +207,7 @@ function scheduler_content_moderation_integration_scheduler_hide_publish_on_fiel
   $moderation_information = \Drupal::service('content_moderation.moderation_information');
 
   $return = FALSE;
-  if ($moderation_information->isModeratedEntity($node)) {
+  if ($moderation_information->isModeratedEntity($node) && isset($form['publish_state']['widget'][0]['#options'])) {
     // If no moderation transitions are available for publish_state then hide
     // the publish_on scheduler field.
     $options_without_none = array_diff_key($form['publish_state']['widget'][0]['#options'], ['_none' => '']);
@@ -227,7 +227,7 @@ function scheduler_content_moderation_integration_scheduler_hide_unpublish_on_fi
   $moderation_information = \Drupal::service('content_moderation.moderation_information');
 
   $return = FALSE;
-  if ($moderation_information->isModeratedEntity($node)) {
+  if ($moderation_information->isModeratedEntity($node) && isset($form['unpublish_state']['widget'][0]['#options'])) {
     // If no moderation transitions are available for unpublish_state then hide
     // the unpublish_on scheduler field.
     $options_without_none = array_diff_key($form['unpublish_state']['widget'][0]['#options'], ['_none' => '']);
